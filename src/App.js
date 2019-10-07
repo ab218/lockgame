@@ -63,7 +63,7 @@ function Guesses({guesses}) {
   return <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center'}}>
     <h1>Guesses:</h1>
     <ol style={{width: 200}}>
-      {guesses.length > 0 && guesses.map((g, i) =><li key={i} style={{marginTop: 10}}>{`{${g.guess}} - ${g.clicks} clicks`}</li>)}
+      {guesses.length > 0 && guesses.map((g, i) =><li key={i} style={{marginTop: 10}}>{`{${g.guess}} - ${g.clicks} click${g.clicks === 1 ? '' : 's'}`}</li>)}
     </ol>
   </div>
 }
@@ -101,7 +101,7 @@ function App() {
     }
     const guessObj = {guess: numberInput, clicks: counter}
     // For each guess, the result is copied to clipboard
-    copyToClipboard(`{${numberInput}} - ${counter} clicks.`);
+    copyToClipboard(`{${numberInput}} - ${counter} click${counter === 1 ? '' : 's'}.`);
     setGuesses(old => old.concat(guessObj));
     setCounter(counter);
     setNumberInput('');
