@@ -10,7 +10,7 @@ function copyToClipboard(text) {
 	document.body.removeChild(dummy);
 }
 
-function PreGameState({ digits, setDigits, setGameState, gameMode, setGameMode, generateRandomNumber }) {
+function PreGameState({ digits, setDigits, setGameState, setGameMode, generateRandomNumber }) {
 	function startGame(e) {
 		if (!e.keyCode || e.keyCode === 13) {
 			setGameState('PLAY');
@@ -45,23 +45,22 @@ function PreGameState({ digits, setDigits, setGameState, gameMode, setGameMode, 
 				<div style={{ textAlign: 'left' }}>
 					<input
 						type="radio"
-						id="clicksOnly"
-						name="gameMode"
-						value="clicksOnly"
-						defaultChecked
-						onClick={() => setGameMode('clicks')}
-					/>
-					<label htmlFor="clicksOnly">Clicks only</label>
-					<div />
-					<input
-						type="radio"
 						id="clicksAndClacks"
 						name="gameMode"
 						value="clicksAndClacks"
-						// checked={gameMode === 'clacks'}
 						onClick={() => setGameMode('clacks')}
+						defaultChecked
 					/>
 					<label htmlFor="clicksAndClacks">Clicks and Clacks</label>
+					<div />
+					<input
+						type="radio"
+						id="clicksOnly"
+						name="gameMode"
+						value="clicksOnly"
+						onClick={() => setGameMode('clicks')}
+					/>
+					<label htmlFor="clicksOnly">Clicks only</label>
 				</div>
 			</div>
 			<button style={{ fontSize: '1.3em', height: '30px', width: '100px' }} onClick={startGame}>
@@ -71,9 +70,10 @@ function PreGameState({ digits, setDigits, setGameState, gameMode, setGameMode, 
 	);
 }
 
-function WinState({ restartGame }) {
+function WinState({ answer, restartGame }) {
 	return (
 		<React.Fragment>
+			<h1>{answer}</h1>
 			<h1>YOU WIN!</h1>
 			<button style={{ width: 200, alignSelf: 'center' }} onClick={restartGame}>
 				Play again?
@@ -82,7 +82,29 @@ function WinState({ restartGame }) {
 	);
 }
 
-function GameState({ answer, setNumberInput, numberInput, checkCombo, clickCounter, clackCounter, gameMode }) {
+function LoseState({ answer, restartGame }) {
+	return (
+		<React.Fragment>
+			<h1>{answer}</h1>
+			<h1>You Lose!</h1>
+			<button style={{ width: 200, alignSelf: 'center' }} onClick={restartGame}>
+				Play again?
+			</button>
+		</React.Fragment>
+	);
+}
+
+function GameState({
+	answer,
+	setNumberInput,
+	numberInput,
+	checkCombo,
+	clickCounter,
+	clackCounter,
+	gameMode,
+	setGameState,
+	surrender,
+}) {
 	const inputRef = useRef(null);
 
 	useEffect(() => {
@@ -91,17 +113,31 @@ function GameState({ answer, setNumberInput, numberInput, checkCombo, clickCount
 
 	return (
 		<React.Fragment>
-			<h1>{answer}</h1>
-			<h5>Choose a number:</h5>
+			<button style={{ fontSize: '1.1em', margin: '1em auto', width: '200px' }} onClick={() => setGameState('LOSE')}>
+				Surrender?
+			</button>
+			{/* <h1>{answer}</h1> */}
+			<h3>Input Guess:</h3>
 			<input
+				type="number"
 				ref={inputRef}
 				autoFocus
-				onKeyDown={(e) => checkCombo(e)}
+				onKeyDown={checkCombo}
 				onChange={(e) => setNumberInput(e.target.value)}
 				style={{ width: 300, alignSelf: 'center' }}
 				value={numberInput}
 			/>
-			<button style={{ alignSelf: 'center', marginTop: 10, height: 20, width: 200 }} onClick={checkCombo}>
+			<button
+				style={{
+					marginBottom: '20px',
+					fontSize: '1.3em',
+					alignSelf: 'center',
+					marginTop: 10,
+					height: '30px',
+					width: '300px',
+				}}
+				onClick={checkCombo}
+			>
 				Check Combination
 			</button>
 			{clickCounter !== null && gameMode === 'clicks' && `${clickCounter} clicks.`}
@@ -141,7 +177,7 @@ function App() {
 	const [ clackCounter, setClackCounter ] = useState(null);
 	const [ guesses, setGuesses ] = useState([]);
 	const [ gameState, setGameState ] = useState('START');
-	const [ gameMode, setGameMode ] = useState('clicks');
+	const [ gameMode, setGameMode ] = useState('clacks');
 
 	function restartGame() {
 		setGuesses([]);
@@ -212,7 +248,7 @@ function App() {
 		setClackCounter(clackCounter);
 		setNumberInput('');
 		if (clickCounter > 0 && clickCounter === digits) {
-			setGameState('END');
+			setGameState('WIN');
 		}
 	}
 
@@ -233,6 +269,7 @@ function App() {
 					checkCombo={gameMode === 'clicks' ? checkCombo : checkCombo2}
 					clickCounter={clickCounter}
 					clackCounter={clackCounter}
+					setGameState={setGameState}
 					gameMode={gameMode}
 					numberInput={numberInput}
 					answer={answer}
@@ -240,7 +277,8 @@ function App() {
 					setNumberInput={setNumberInput}
 				/>
 			)}
-			{gameState === 'END' && <WinState restartGame={restartGame} />}
+			{gameState === 'WIN' && <WinState answer={answer} restartGame={restartGame} />}
+			{gameState === 'LOSE' && <LoseState answer={answer} restartGame={restartGame} />}
 			{gameState !== 'START' && <Guesses gameMode={gameMode} guesses={guesses} />}
 		</div>
 	);
