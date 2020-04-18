@@ -10,7 +10,15 @@ function copyToClipboard(text) {
 	document.body.removeChild(dummy);
 }
 
-function PreGameState({ digits, setDigits, setGameState, setGameMode, generateRandomNumber }) {
+function PreGameState({
+	digits,
+	setDigits,
+	setGameState,
+	setGameMode,
+	setShowAnswer,
+	showAnswer,
+	generateRandomNumber,
+}) {
 	function startGame(e) {
 		if (!e.keyCode || e.keyCode === 13) {
 			setGameState('PLAY');
@@ -48,8 +56,8 @@ function PreGameState({ digits, setDigits, setGameState, setGameMode, generateRa
 						id="clicksAndClacks"
 						name="gameMode"
 						value="clicksAndClacks"
-						onClick={() => setGameMode('clacks')}
 						defaultChecked
+						onClick={() => setGameMode('clacks')}
 					/>
 					<label htmlFor="clicksAndClacks">Clicks and Clacks</label>
 					<div />
@@ -63,7 +71,19 @@ function PreGameState({ digits, setDigits, setGameState, setGameMode, generateRa
 					<label htmlFor="clicksOnly">Clicks only</label>
 				</div>
 			</div>
-			<button style={{ fontSize: '1.3em', height: '30px', width: '100px' }} onClick={startGame}>
+			<div>
+				<span>
+					Show Answer
+					<input
+						onChange={() => {
+							setShowAnswer((prev) => !prev);
+						}}
+						type="checkbox"
+						checked={showAnswer}
+					/>
+				</span>
+			</div>
+			<button style={{ fontSize: '1.3em', height: '30px', width: '100px', marginTop: '30px' }} onClick={startGame}>
 				Start
 			</button>
 		</div>
@@ -103,7 +123,7 @@ function GameState({
 	clackCounter,
 	gameMode,
 	setGameState,
-	surrender,
+	showAnswer,
 }) {
 	const inputRef = useRef(null);
 
@@ -116,7 +136,7 @@ function GameState({
 			<button style={{ fontSize: '1.1em', margin: '1em auto', width: '200px' }} onClick={() => setGameState('LOSE')}>
 				Surrender?
 			</button>
-			{/* <h1>{answer}</h1> */}
+			{showAnswer && <h1>{answer}</h1>}
 			<h3>Input Guess:</h3>
 			<input
 				type="number"
@@ -178,6 +198,7 @@ function App() {
 	const [ guesses, setGuesses ] = useState([]);
 	const [ gameState, setGameState ] = useState('START');
 	const [ gameMode, setGameMode ] = useState('clacks');
+	const [ showAnswer, setShowAnswer ] = useState(true);
 
 	function restartGame() {
 		setGuesses([]);
@@ -259,6 +280,8 @@ function App() {
 					digits={digits}
 					setDigits={setDigits}
 					setGameState={setGameState}
+					setShowAnswer={setShowAnswer}
+					showAnswer={showAnswer}
 					gameMode={gameMode}
 					setGameMode={setGameMode}
 					generateRandomNumber={generateRandomNumber}
@@ -272,6 +295,7 @@ function App() {
 					setGameState={setGameState}
 					gameMode={gameMode}
 					numberInput={numberInput}
+					showAnswer={showAnswer}
 					answer={answer}
 					setDigits={setDigits}
 					setNumberInput={setNumberInput}
