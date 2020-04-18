@@ -104,7 +104,8 @@ function GameState({ answer, setNumberInput, numberInput, checkCombo, clickCount
 			<button style={{ alignSelf: 'center', marginTop: 10, height: 20, width: 200 }} onClick={checkCombo}>
 				Check Combination
 			</button>
-			{clickCounter !== null && `${clickCounter} clicks, ${clackCounter} clacks.`}
+			{clickCounter !== null && gameMode === 'clicks' && `${clickCounter} clicks.`}
+			{clickCounter !== null && gameMode === 'clacks' && `${clickCounter} clicks, ${clackCounter} clacks.`}
 		</React.Fragment>
 	);
 }
