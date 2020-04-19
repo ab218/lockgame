@@ -262,7 +262,9 @@ function App() {
 		const guessObj = { guess: numberInput, clicks: clickCounter, clacks: clackCounter };
 		// For each guess, the result is copied to clipboard
 		copyToClipboard(
-			`{ ${numberInput} } - ${clickCounter} click${clickCounter === 1 ? '' : 's'}, ${clackCounter} clacks.`,
+			`{ ${numberInput} } - ${clickCounter} click${clickCounter === 1
+				? ''
+				: 's'}, ${clackCounter} clack${clackCounter === 1 ? '' : 's'}.`,
 		);
 		setGuesses((old) => old.concat(guessObj));
 		setClickCounter(clickCounter);
