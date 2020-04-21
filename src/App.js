@@ -245,24 +245,20 @@ function App() {
 		const splitNumberInput = numberInput.split('');
 		let clickCounter = 0;
 		let clackCounter = 0;
-		let temp = splitRandomNumber;
+		let temp = splitNumberInput;
 		for (let i = 0; i < splitRandomNumber.length; i++) {
 			if (splitNumberInput[i] === splitRandomNumber[i]) {
 				temp.splice(i, 1, 'click');
 				clickCounter++;
-			} else if (temp.includes(splitNumberInput[i])) {
-				const foundIndex = temp.findIndex((a) => a === splitNumberInput[i]);
+			}
+		}
+		for (let i = 0; i < splitRandomNumber.length; i++) {
+			if (temp.includes(splitRandomNumber[i])) {
+				const foundIndex = temp.findIndex((a) => a === splitRandomNumber[i]);
 				temp.splice(foundIndex, 1, 'clack');
 				clackCounter++;
 			}
 		}
-		// for (let i = 0; i < splitRandomNumber.length; i++) {
-		// 	if (temp.includes(splitNumberInput[i])) {
-		// 		const foundIndex = temp.findIndex((a) => a === splitNumberInput[i]);
-		// 		temp.splice(foundIndex, 1, 'clack');
-		// 		clackCounter++;
-		// 	}
-		// }
 		const guessObj = { guess: numberInput, clicks: clickCounter, clacks: clackCounter };
 		// For each guess, the result is copied to clipboard
 		copyToClipboard(
