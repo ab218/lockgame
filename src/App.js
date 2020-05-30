@@ -170,7 +170,7 @@ function Guesses({ guesses, gameMode }) {
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
 			<h1>Guesses:</h1>
-			<ol style={{ width: 200 }}>
+			<ol style={{ width: 300, textAlign: 'left' }}>
 				{guesses.length > 0 && gameMode === 'clicks' ? (
 					guesses.map((g, i) => (
 						<li key={i} style={{ marginTop: 10 }}>{`{ ${g.guess} } - ${g.clicks} click${g.clicks === 1
@@ -232,7 +232,7 @@ function App() {
 		setClickCounter(counter);
 		setNumberInput('');
 		if (counter > 0 && counter === digits) {
-			setGameState('END');
+			setGameState('WIN');
 		}
 	}
 
