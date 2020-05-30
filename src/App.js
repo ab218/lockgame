@@ -38,7 +38,7 @@ function PreGameState({
 		<div>
 			<div>{`Set Length of Combination`}</div>
 			<input
-				defaultValue={4}
+				defaultValue={digits}
 				style={{ width: '50px' }}
 				type="number"
 				autoFocus
@@ -245,17 +245,18 @@ function App() {
 		const splitNumberInput = numberInput.split('');
 		let clickCounter = 0;
 		let clackCounter = 0;
-		let temp = splitNumberInput;
-		for (let i = 0; i < splitRandomNumber.length; i++) {
+		let temp = splitRandomNumber.slice();
+		for (let i = 0; i < temp.length; i++) {
 			if (splitNumberInput[i] === splitRandomNumber[i]) {
 				temp.splice(i, 1, 'click');
 				clickCounter++;
 			}
 		}
-		for (let i = 0; i < splitRandomNumber.length; i++) {
-			if (temp.includes(splitRandomNumber[i])) {
-				const foundIndex = temp.findIndex((a) => a === splitRandomNumber[i]);
+		for (let i = 0; i < temp.length; i++) {
+			if (splitNumberInput.includes(temp[i])) {
+				const foundIndex = temp.findIndex((a) => a === splitNumberInput[i]);
 				temp.splice(foundIndex, 1, 'clack');
+				console.log(temp);
 				clackCounter++;
 			}
 		}
