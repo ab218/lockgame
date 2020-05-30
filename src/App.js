@@ -252,11 +252,10 @@ function App() {
 				clickCounter++;
 			}
 		}
-		for (let i = 0; i < temp.length; i++) {
-			if (splitNumberInput.includes(temp[i])) {
+		for (let i = 0; i < splitNumberInput.length; i++) {
+			if (temp.includes(splitNumberInput[i])) {
 				const foundIndex = temp.findIndex((a) => a === splitNumberInput[i]);
 				temp.splice(foundIndex, 1, 'clack');
-				console.log(temp);
 				clackCounter++;
 			}
 		}
