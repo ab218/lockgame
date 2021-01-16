@@ -1,6 +1,6 @@
 ## Summary
 
-This is a variation of the numerical logic game [Bulls and Cows](https://en.wikipedia.org/wiki/Bulls_and_Cows).
+A variation of the numerical logic game [Bulls and Cows](https://en.wikipedia.org/wiki/Bulls_and_Cows).
 
 To set up the game, first choose the game mode and the number (_n_) of digits for the secret combination. When playing alone or with others, the answer should be hidden from the players who are attempting to solve the secret combination.
 
